@@ -59,11 +59,18 @@ update msg model =
         Tick newTime ->
             let
                 w =
-                    ((model.counter1 + 1) < model.limit) && (model.counter2 < model.interval)
+                    if model.counter1 + 1 < model.limit then
+                        True
+
+                    else if (model.counter1 + model.counter2) >= (model.limit + model.interval) then
+                        True
+
+                    else
+                        False
 
                 c1 =
-                    if model.inStart && model.working then
-                        if model.counter1 < model.limit then
+                    if model.inStart then
+                        if model.working then
                             model.counter1 + 1
 
                         else
@@ -73,7 +80,7 @@ update msg model =
                         model.counter1
 
                 c2 =
-                    if model.inStart && not model.working then
+                    if model.inStart then
                         if not model.working then
                             model.counter2 + 1
 
