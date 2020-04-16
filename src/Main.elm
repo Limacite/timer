@@ -24,8 +24,7 @@ main =
 type alias Model =
     { zone : Time.Zone
     , time : Time.Posix
-    , counter1 : Int
-    , counter2 : Int
+    , counter : Int
     , limit : Int
     , interval : Int
     , working : Bool
@@ -35,7 +34,7 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Time.utc (Time.millisToPosix 0) 0 0 3 2 True False
+    ( Model Time.utc (Time.millisToPosix 0) 0 3 2 True False
     , Task.perform AdjustTimeZone Time.here
     )
 
@@ -58,32 +57,21 @@ update msg model =
     case msg of
         Tick newTime ->
             let
+                c =
+                    if model.inStart then
+                        if model.counter < (model.limit + model.interval) then
+                            model.counter + 1
+
+                        else
+                            0
+
+                    else
+                        model.counter
+
                 w =
-                    ((model.counter1 + 1) < model.limit) && (model.counter2 < model.interval)
-
-                c1 =
-                    if model.inStart && model.working then
-                        if model.counter1 < model.limit then
-                            model.counter1 + 1
-
-                        else
-                            0
-
-                    else
-                        model.counter1
-
-                c2 =
-                    if model.inStart && not model.working then
-                        if not model.working then
-                            model.counter2 + 1
-
-                        else
-                            0
-
-                    else
-                        model.counter2
+                    (model.counter + 1) < model.limit
             in
-            ( { model | counter1 = c1, counter2 = c2, working = w }, Cmd.none )
+            ( { model | counter = c, working = w }, Cmd.none )
 
         AdjustTimeZone newZone ->
             ( { model | zone = newZone }, Cmd.none )
@@ -100,7 +88,7 @@ update msg model =
             ( { model | inStart = r }, Cmd.none )
 
         ChangePlayer ->
-            ( { model | counter1 = 0, counter2 = 0 }, Cmd.none )
+            ( { model | counter = 0 }, Cmd.none )
 
         IncrementLimit ->
             ( { model | limit = model.limit + 1 }, Cmd.none )
@@ -154,10 +142,22 @@ view : Model -> Html Msg
 view model =
     let
         w =
-            String.fromInt model.counter1
+            String.fromInt
+                (if model.working then
+                    model.counter
+
+                 else
+                    model.limit
+                )
 
         b =
-            String.fromInt model.counter2
+            String.fromInt
+                (if model.working then
+                    0
+
+                 else
+                    model.counter - model.limit
+                )
 
         l =
             String.fromInt model.limit
