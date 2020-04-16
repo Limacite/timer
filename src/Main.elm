@@ -62,14 +62,28 @@ update msg model =
                         if model.counter < (model.limit + model.interval) then
                             model.counter + 1
 
-                        else
+                        else if model.working then
                             0
+
+                        else
+                            1
 
                     else
                         model.counter
 
                 w =
-                    (model.counter + 1) < model.limit
+                    if model.inStart then
+                        if model.counter + 1 < model.limit then
+                            True
+
+                        else if model.counter < model.limit + model.interval then
+                            False
+
+                        else
+                            True
+
+                    else
+                        model.working
             in
             ( { model | counter = c, working = w }, Cmd.none )
 
@@ -88,19 +102,37 @@ update msg model =
             ( { model | inStart = r }, Cmd.none )
 
         ChangePlayer ->
-            ( { model | counter = 0 }, Cmd.none )
+            ( { model | counter = 0, working = True }, Cmd.none )
 
         IncrementLimit ->
             ( { model | limit = model.limit + 1 }, Cmd.none )
 
         DecrementLimit ->
-            ( { model | limit = model.limit - 1 }, Cmd.none )
+            ( { model
+                | limit =
+                    if model.limit > 0 then
+                        model.limit - 1
+
+                    else
+                        model.limit
+              }
+            , Cmd.none
+            )
 
         IncrementInterval ->
             ( { model | interval = model.interval + 1 }, Cmd.none )
 
         DecrementInterval ->
-            ( { model | interval = model.interval - 1 }, Cmd.none )
+            ( { model
+                | interval =
+                    if model.interval > 0 then
+                        model.interval - 1
+
+                    else
+                        model.interval
+              }
+            , Cmd.none
+            )
 
         EditLimit inputedTime ->
             let
@@ -112,7 +144,16 @@ update msg model =
                         Just int ->
                             int
             in
-            ( { model | limit = t }, Cmd.none )
+            ( { model
+                | limit =
+                    if t > 0 then
+                        t
+
+                    else
+                        model.limit
+              }
+            , Cmd.none
+            )
 
         EditInterval inputedTime ->
             let
@@ -124,7 +165,16 @@ update msg model =
                         Just int ->
                             int
             in
-            ( { model | limit = t }, Cmd.none )
+            ( { model
+                | interval =
+                    if t > 0 then
+                        t
+
+                    else
+                        model.limit
+              }
+            , Cmd.none
+            )
 
 
 
@@ -159,6 +209,9 @@ view model =
                     model.counter - model.limit
                 )
 
+        c =
+            String.fromInt model.counter
+
         l =
             String.fromInt model.limit
 
@@ -182,7 +235,16 @@ view model =
     layout [] <|
         row [ centerX, centerY, spacing 30 ]
             [ column []
-                [ el [ centerX, Font.size 50 ] <| text ((w ++ "/") ++ l)
+                [ el [ centerX, Font.size 50 ] <|
+                    text
+                        (if model.working then
+                            "TRUE"
+
+                         else
+                            "FALSE"
+                        )
+                , el [ centerX, Font.size 50 ] <| text ((w ++ "/") ++ l)
+                , el [ centerX, Font.size 50 ] <| text ((c ++ "/") ++ l)
                 , el [ centerX, Font.size 50 ] <| text ((b ++ "/") ++ i)
                 , row [ spacing 10 ]
                     [ el [ BD.color (rgb255 0 0 0), BD.width 1, BD.solid ] <| Input.button [] { onPress = Just DoTimer, label = text bt }
@@ -192,7 +254,7 @@ view model =
             , column [ height fill, width (px 90) ]
                 [ el [ centerX ] <| text "work time"
                 , row [ centerY, width fill ]
-                    [ el [ width fill ] <| Input.text [ width (px 75) ] { onChange = EditLimit, text = "", placeholder = Just (Input.placeholder [] <| text l), label = Input.labelAbove [] <| text "" }
+                    [ el [ width fill ] <| Input.text [ width (px 75) ] { onChange = EditLimit, text = l, placeholder = Nothing, label = Input.labelAbove [] <| text "" }
                     , column [ height fill ]
                         [ Input.button [ alignTop ] { onPress = Just IncrementLimit, label = text "Λ" }
                         , Input.button [ alignBottom ] { onPress = Just DecrementLimit, label = text "V" }
@@ -202,7 +264,7 @@ view model =
             , column [ height fill, width (px 90) ]
                 [ el [ centerX ] <| text "interval"
                 , row [ centerY, width fill ]
-                    [ el [ width fill ] <| Input.text [ height fill, width (px 75) ] { onChange = EditInterval, text = "", placeholder = Just (Input.placeholder [] <| text i), label = Input.labelAbove [] <| text "" }
+                    [ el [ width fill ] <| Input.text [ height fill, width (px 75) ] { onChange = EditInterval, text = i, placeholder = Nothing, label = Input.labelAbove [] <| text "" }
                     , column [ height fill, centerY ]
                         [ Input.button [ alignTop ] { onPress = Just IncrementInterval, label = text "Λ" }
                         , Input.button [ alignBottom ] { onPress = Just DecrementInterval, label = text "V" }
