@@ -235,16 +235,7 @@ view model =
     layout [] <|
         row [ centerX, centerY, spacing 30 ]
             [ column []
-                [ el [ centerX, Font.size 50 ] <|
-                    text
-                        (if model.working then
-                            "TRUE"
-
-                         else
-                            "FALSE"
-                        )
-                , el [ centerX, Font.size 50 ] <| text ((w ++ "/") ++ l)
-                , el [ centerX, Font.size 50 ] <| text ((c ++ "/") ++ l)
+                [ el [ centerX, Font.size 50 ] <| text ((w ++ "/") ++ l)
                 , el [ centerX, Font.size 50 ] <| text ((b ++ "/") ++ i)
                 , row [ spacing 10 ]
                     [ el [ BD.color (rgb255 0 0 0), BD.width 1, BD.solid ] <| Input.button [] { onPress = Just DoTimer, label = text bt }
