@@ -1,4 +1,4 @@
-module Main exposing (Model, Msg(..), init, main, subscription, update, view)
+port module Main exposing (Model, Msg(..), beep, init, main, subscription, update, view)
 
 import Browser
 import Element exposing (..)
@@ -6,7 +6,8 @@ import Element.Background as BG
 import Element.Border as BD
 import Element.Font as Font
 import Element.Input as Input
-import Html exposing (Html)
+import Html
+import Html.Attributes exposing (autoplay, controls, preload, src)
 import Task
 import Time
 
@@ -32,6 +33,10 @@ type alias Model =
     }
 
 
+
+--INIT
+
+
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( Model Time.utc (Time.millisToPosix 0) 0 3 2 True False
@@ -52,6 +57,13 @@ type Msg
     | EditInterval String
 
 
+
+--UPDATE
+
+
+port beep : Bool -> Cmd msg
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -66,7 +78,7 @@ update msg model =
                             0
 
                         else
-                            1
+                            0
 
                     else
                         model.counter
@@ -84,8 +96,19 @@ update msg model =
 
                     else
                         model.working
+
+                cmd =
+                    if model.inStart then
+                        if model.counter < (model.limit + model.interval) then
+                            Cmd.none
+
+                        else
+                            beep True
+
+                    else
+                        Cmd.none
             in
-            ( { model | counter = c, working = w }, Cmd.none )
+            ( { model | counter = c, working = w }, cmd )
 
         AdjustTimeZone newZone ->
             ( { model | zone = newZone }, Cmd.none )
@@ -177,18 +200,16 @@ update msg model =
             )
 
 
-
-{- ChangeLimit newtime ->
-   ( { model | limit = model.limit }, Cmd.none )
--}
-
-
 subscription : Model -> Sub Msg
 subscription model =
     Time.every 1000 Tick
 
 
-view : Model -> Html Msg
+
+--VIEW
+
+
+view : Model -> Html.Html Msg
 view model =
     let
         w =
@@ -263,3 +284,16 @@ view model =
                     ]
                 ]
             ]
+
+
+
+--METHOD
+{--
+bellAttribute : Bool -> List (Html.Attribute msg)
+bellAttribute switch =
+    [ autoplay switch
+    , src "bell.mp3"
+    , preload "auto"
+    , controls False
+    ]
+--}
