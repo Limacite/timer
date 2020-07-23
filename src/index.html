@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="elm.js"></script>
+    <title>Port Example</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+      var app = Elm.Main.init({
+        node: document.getElementById("root")
+      });
+      var bell = new Audio(`bell.mp3`);
+      
+      app.ports.beep.subscribe(
+        function(){
+          bell.play();
+        });
+    </script>
+</body>
+
+</html>

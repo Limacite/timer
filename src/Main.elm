@@ -61,7 +61,7 @@ type Msg
 --UPDATE
 
 
-port beep : Bool -> Cmd msg
+port beep : () -> Cmd msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -103,7 +103,7 @@ update msg model =
                             Cmd.none
 
                         else
-                            beep True
+                            beep ()
 
                     else
                         Cmd.none
