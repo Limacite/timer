@@ -4844,6 +4844,7 @@ var $elm$core$Array$treeFromBuilder = F2(
 	});
 var $elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
+<<<<<<< Updated upstream
 		if (!builder.nodeListSize) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
@@ -4863,6 +4864,27 @@ var $elm$core$Array$builderToArray = F2(
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
 				builder.tail);
+=======
+		if (!builder.e) {
+			return A4(
+				$elm$core$Array$Array_elm_builtin,
+				$elm$core$Elm$JsArray$length(builder.h),
+				$elm$core$Array$shiftStep,
+				$elm$core$Elm$JsArray$empty,
+				builder.h);
+		} else {
+			var treeLen = builder.e * $elm$core$Array$branchFactor;
+			var depth = $elm$core$Basics$floor(
+				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.i) : builder.i;
+			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.e);
+			return A4(
+				$elm$core$Array$Array_elm_builtin,
+				$elm$core$Elm$JsArray$length(builder.h) + treeLen,
+				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
+				tree,
+				builder.h);
+>>>>>>> Stashed changes
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -4875,7 +4897,11 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
+<<<<<<< Updated upstream
 					{nodeList: nodeList, nodeListSize: (len / $elm$core$Array$branchFactor) | 0, tail: tail});
+=======
+					{i: nodeList, e: (len / $elm$core$Array$branchFactor) | 0, h: tail});
+>>>>>>> Stashed changes
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -5232,7 +5258,11 @@ var $author$project$Main$AdjustTimeZone = function (a) {
 };
 var $author$project$Main$Model = F7(
 	function (zone, time, counter, limit, interval, working, inStart) {
+<<<<<<< Updated upstream
 		return {counter: counter, inStart: inStart, interval: interval, limit: limit, time: time, working: working, zone: zone};
+=======
+		return {g: counter, F: inStart, d: interval, b: limit, dl: time, W: working, bN: zone};
+>>>>>>> Stashed changes
 	});
 var $elm$time$Time$Name = function (a) {
 	return {$: 'Name', a: a};
@@ -5678,11 +5708,38 @@ var $author$project$Main$beep = _Platform_outgoingPort(
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $elm$json$Json$Encode$int = _Json_wrap;
+var $elm$json$Json$Encode$list = F2(
+	function (func, entries) {
+		return _Json_wrap(
+			A3(
+				$elm$core$List$foldl,
+				_Json_addEntry(func),
+				_Json_emptyArray(0),
+				entries));
+	});
+var $author$project$Main$timeSet = _Platform_outgoingPort(
+	'timeSet',
+	function ($) {
+		var a = $.a;
+		var b = $.b;
+		var c = $.c;
+		return A2(
+			$elm$json$Json$Encode$list,
+			$elm$core$Basics$identity,
+			_List_fromArray(
+				[
+					$elm$json$Json$Encode$int(a),
+					$elm$json$Json$Encode$int(b),
+					$elm$json$Json$Encode$int(c)
+				]));
+	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 'Tick':
 				var newTime = msg.a;
+<<<<<<< Updated upstream
 				var w = model.inStart ? ((_Utils_cmp(model.counter + 1, model.limit) < 0) ? true : ((_Utils_cmp(model.counter, model.limit + model.interval) < 0) ? false : true)) : model.working;
 				var cmd = model.inStart ? ((_Utils_cmp(model.counter, model.limit + model.interval) < 0) ? $elm$core$Platform$Cmd$none : $author$project$Main$beep(_Utils_Tuple0)) : $elm$core$Platform$Cmd$none;
 				var c = model.inStart ? ((_Utils_cmp(model.counter, model.limit + model.interval) < 0) ? (model.counter + 1) : (model.working ? 0 : 0)) : model.counter;
@@ -5690,6 +5747,15 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{counter: c, working: w}),
+=======
+				var w = model.F ? ((_Utils_cmp(model.g + 1, model.b) < 0) ? true : ((_Utils_cmp(model.g, model.b + model.d) < 0) ? false : true)) : model.W;
+				var cmd = model.F ? ((_Utils_cmp(model.g, model.b + model.d) < 0) ? $elm$core$Platform$Cmd$none : $author$project$Main$beep(0)) : $elm$core$Platform$Cmd$none;
+				var c = model.F ? ((_Utils_cmp(model.g, model.b + model.d) < 0) ? (model.g + 1) : (model.W ? 0 : 0)) : model.g;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{g: c, W: w}),
+>>>>>>> Stashed changes
 					cmd);
 			case 'AdjustTimeZone':
 				var newZone = msg.a;
@@ -5705,6 +5771,7 @@ var $author$project$Main$update = F2(
 						model,
 						{inStart: r}),
 					$elm$core$Platform$Cmd$none);
+<<<<<<< Updated upstream
 			case 'ChangePlayer':
 				return _Utils_Tuple2(
 					_Utils_update(
@@ -5718,10 +5785,29 @@ var $author$project$Main$update = F2(
 						{limit: model.limit + 1}),
 					$elm$core$Platform$Cmd$none);
 			case 'DecrementLimit':
+=======
+			case 3:
+				var cmd = $author$project$Main$timeSet(
+					_Utils_Tuple3(model.b, model.d, 0));
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{g: 0, W: true}),
+					cmd);
+			case 4:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{b: model.b + 1}),
+					$author$project$Main$timeSet(
+						_Utils_Tuple3(model.b + 1, model.d, model.g)));
+			case 5:
+>>>>>>> Stashed changes
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
+<<<<<<< Updated upstream
 							limit: (model.limit > 0) ? (model.limit - 1) : model.limit
 						}),
 					$elm$core$Platform$Cmd$none);
@@ -5732,49 +5818,110 @@ var $author$project$Main$update = F2(
 						{interval: model.interval + 1}),
 					$elm$core$Platform$Cmd$none);
 			case 'DecrementInterval':
+=======
+							b: (model.b > 0) ? (model.b - 1) : model.b
+						}),
+					$author$project$Main$timeSet(
+						_Utils_Tuple3(model.b - 1, model.d, model.g)));
+			case 6:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{d: model.d + 1}),
+					$author$project$Main$timeSet(
+						_Utils_Tuple3(model.b, model.d + 1, model.g)));
+			case 7:
+>>>>>>> Stashed changes
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
+<<<<<<< Updated upstream
 							interval: (model.interval > 0) ? (model.interval - 1) : model.interval
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 'EditLimit':
-				var inputedTime = msg.a;
-				var t = function () {
-					var _v1 = $elm$core$String$toInt(inputedTime);
-					if (_v1.$ === 'Nothing') {
-						return model.limit;
-					} else {
-						var _int = _v1.a;
-						return _int;
-					}
-				}();
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							limit: (t > 0) ? t : model.limit
+=======
+							d: (model.d > 0) ? (model.d - 1) : model.d
 						}),
-					$elm$core$Platform$Cmd$none);
-			default:
+					$author$project$Main$timeSet(
+						_Utils_Tuple3(model.b, model.d - 1, model.g)));
+			case 8:
+>>>>>>> Stashed changes
 				var inputedTime = msg.a;
 				var t = function () {
 					var _v2 = $elm$core$String$toInt(inputedTime);
-					if (_v2.$ === 'Nothing') {
-						return model.interval;
+					if (_v2.$ === 1) {
+						return model.b;
 					} else {
 						var _int = _v2.a;
 						return _int;
 					}
 				}();
+				var cmd = function () {
+					var _v1 = $elm$core$String$toInt(inputedTime);
+<<<<<<< Updated upstream
+					if (_v1.$ === 'Nothing') {
+						return model.limit;
+=======
+					if (_v1.$ === 1) {
+						return $elm$core$Platform$Cmd$none;
+>>>>>>> Stashed changes
+					} else {
+						var _int = _v1.a;
+						return $author$project$Main$timeSet(
+							_Utils_Tuple3(_int, model.d, model.g));
+					}
+				}();
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							interval: (t > 0) ? t : model.limit
+<<<<<<< Updated upstream
+							limit: (t > 0) ? t : model.limit
+=======
+							b: (t > 0) ? t : model.b
+>>>>>>> Stashed changes
 						}),
-					$elm$core$Platform$Cmd$none);
+					cmd);
+			default:
+				var inputedTime = msg.a;
+				var t = function () {
+<<<<<<< Updated upstream
+					var _v2 = $elm$core$String$toInt(inputedTime);
+					if (_v2.$ === 'Nothing') {
+						return model.interval;
+=======
+					var _v4 = $elm$core$String$toInt(inputedTime);
+					if (_v4.$ === 1) {
+						return model.d;
+>>>>>>> Stashed changes
+					} else {
+						var _int = _v4.a;
+						return _int;
+					}
+				}();
+				var cmd = function () {
+					var _v3 = $elm$core$String$toInt(inputedTime);
+					if (_v3.$ === 1) {
+						return $elm$core$Platform$Cmd$none;
+					} else {
+						var _int = _v3.a;
+						return $author$project$Main$timeSet(
+							_Utils_Tuple3(model.b, _int, model.g));
+					}
+				}();
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+<<<<<<< Updated upstream
+							interval: (t > 0) ? t : model.limit
+=======
+							d: (t > 0) ? t : model.b
+>>>>>>> Stashed changes
+						}),
+					cmd);
 		}
 	});
 var $author$project$Main$ChangePlayer = {$: 'ChangePlayer'};
@@ -8155,8 +8302,12 @@ var $mdgriffith$elm_ui$Internal$Style$Intermediate = function (a) {
 };
 var $mdgriffith$elm_ui$Internal$Style$emptyIntermediate = F2(
 	function (selector, closing) {
+<<<<<<< Updated upstream
 		return $mdgriffith$elm_ui$Internal$Style$Intermediate(
 			{closing: closing, others: _List_Nil, props: _List_Nil, selector: selector});
+=======
+		return {ap: closing, l: _List_Nil, J: _List_Nil, A: selector};
+>>>>>>> Stashed changes
 	});
 var $mdgriffith$elm_ui$Internal$Style$renderRules = F2(
 	function (_v0, rulesToRender) {
@@ -8183,11 +8334,18 @@ var $mdgriffith$elm_ui$Internal$Style$renderRules = F2(
 						return _Utils_update(
 							rendered,
 							{
+<<<<<<< Updated upstream
 								others: A2(
 									$elm$core$List$cons,
 									$mdgriffith$elm_ui$Internal$Style$Intermediate(
 										{closing: '\n}', others: _List_Nil, props: props, selector: '@supports (' + (prop + (':' + (value + (') {' + parent.selector))))}),
 									rendered.others)
+=======
+								l: A2(
+									$elm$core$List$cons,
+									{ap: '\n}', l: _List_Nil, J: props, A: '@supports (' + (prop + (':' + (value + (') {' + parent.A))))},
+									rendered.l)
+>>>>>>> Stashed changes
 							});
 					case 'Adjacent':
 						var selector = rule.a;
@@ -8195,13 +8353,21 @@ var $mdgriffith$elm_ui$Internal$Style$renderRules = F2(
 						return _Utils_update(
 							rendered,
 							{
+<<<<<<< Updated upstream
 								others: A2(
+=======
+								l: A2(
+>>>>>>> Stashed changes
 									$elm$core$List$cons,
 									A2(
 										$mdgriffith$elm_ui$Internal$Style$renderRules,
 										A2($mdgriffith$elm_ui$Internal$Style$emptyIntermediate, parent.selector + (' + ' + selector), ''),
 										adjRules),
+<<<<<<< Updated upstream
 									rendered.others)
+=======
+									rendered.l)
+>>>>>>> Stashed changes
 							});
 					case 'Child':
 						var child = rule.a;
@@ -8209,13 +8375,21 @@ var $mdgriffith$elm_ui$Internal$Style$renderRules = F2(
 						return _Utils_update(
 							rendered,
 							{
+<<<<<<< Updated upstream
 								others: A2(
+=======
+								l: A2(
+>>>>>>> Stashed changes
 									$elm$core$List$cons,
 									A2(
 										$mdgriffith$elm_ui$Internal$Style$renderRules,
 										A2($mdgriffith$elm_ui$Internal$Style$emptyIntermediate, parent.selector + (' > ' + child), ''),
 										childRules),
+<<<<<<< Updated upstream
 									rendered.others)
+=======
+									rendered.l)
+>>>>>>> Stashed changes
 							});
 					case 'Descriptor':
 						var descriptor = rule.a;
@@ -8223,7 +8397,11 @@ var $mdgriffith$elm_ui$Internal$Style$renderRules = F2(
 						return _Utils_update(
 							rendered,
 							{
+<<<<<<< Updated upstream
 								others: A2(
+=======
+								l: A2(
+>>>>>>> Stashed changes
 									$elm$core$List$cons,
 									A2(
 										$mdgriffith$elm_ui$Internal$Style$renderRules,
@@ -8232,20 +8410,32 @@ var $mdgriffith$elm_ui$Internal$Style$renderRules = F2(
 											_Utils_ap(parent.selector, descriptor),
 											''),
 										descriptorRules),
+<<<<<<< Updated upstream
 									rendered.others)
+=======
+									rendered.l)
+>>>>>>> Stashed changes
 							});
 					default:
 						var batched = rule.a;
 						return _Utils_update(
 							rendered,
 							{
+<<<<<<< Updated upstream
 								others: A2(
+=======
+								l: A2(
+>>>>>>> Stashed changes
 									$elm$core$List$cons,
 									A2(
 										$mdgriffith$elm_ui$Internal$Style$renderRules,
 										A2($mdgriffith$elm_ui$Internal$Style$emptyIntermediate, parent.selector, ''),
 										batched),
+<<<<<<< Updated upstream
 									rendered.others)
+=======
+									rendered.l)
+>>>>>>> Stashed changes
 							});
 				}
 			});
@@ -8277,7 +8467,11 @@ var $mdgriffith$elm_ui$Internal$Style$renderCompact = function (styleClasses) {
 		return _Utils_ap(
 			renderClass(rule),
 			$elm$core$String$concat(
+<<<<<<< Updated upstream
 				A2($elm$core$List$map, renderIntermediate, rule.others)));
+=======
+				A2($elm$core$List$map, renderIntermediate, rule.l)));
+>>>>>>> Stashed changes
 	};
 	return $elm$core$String$concat(
 		A2(
@@ -8340,6 +8534,7 @@ var $mdgriffith$elm_ui$Internal$Model$staticRoot = function (opts) {
 				_List_Nil);
 	}
 };
+<<<<<<< Updated upstream
 var $elm$json$Json$Encode$list = F2(
 	function (func, entries) {
 		return _Json_wrap(
@@ -8349,6 +8544,8 @@ var $elm$json$Json$Encode$list = F2(
 				_Json_emptyArray(_Utils_Tuple0),
 				entries));
 	});
+=======
+>>>>>>> Stashed changes
 var $elm$json$Json$Encode$object = function (pairs) {
 	return _Json_wrap(
 		A3(
@@ -12179,6 +12376,7 @@ var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
 				return $mdgriffith$elm_ui$Element$Input$isFill(width) ? _Utils_update(
 					els,
 					{
+<<<<<<< Updated upstream
 						fullParent: A2($elm$core$List$cons, attr, els.fullParent),
 						input: A2($elm$core$List$cons, attr, els.input),
 						parent: A2($elm$core$List$cons, attr, els.parent)
@@ -12186,6 +12384,15 @@ var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
 					els,
 					{
 						fullParent: A2($elm$core$List$cons, attr, els.fullParent)
+=======
+						c: A2($elm$core$List$cons, attr, els.c),
+						j: A2($elm$core$List$cons, attr, els.j),
+						a: A2($elm$core$List$cons, attr, els.a)
+					}) : (stacked ? _Utils_update(
+					els,
+					{
+						c: A2($elm$core$List$cons, attr, els.c)
+>>>>>>> Stashed changes
 					}) : _Utils_update(
 					els,
 					{
@@ -12196,6 +12403,7 @@ var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
 				return (!stacked) ? _Utils_update(
 					els,
 					{
+<<<<<<< Updated upstream
 						fullParent: A2($elm$core$List$cons, attr, els.fullParent),
 						parent: A2($elm$core$List$cons, attr, els.parent)
 					}) : ($mdgriffith$elm_ui$Element$Input$isFill(height) ? _Utils_update(
@@ -12203,6 +12411,15 @@ var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
 					{
 						fullParent: A2($elm$core$List$cons, attr, els.fullParent),
 						parent: A2($elm$core$List$cons, attr, els.parent)
+=======
+						c: A2($elm$core$List$cons, attr, els.c),
+						a: A2($elm$core$List$cons, attr, els.a)
+					}) : ($mdgriffith$elm_ui$Element$Input$isFill(height) ? _Utils_update(
+					els,
+					{
+						c: A2($elm$core$List$cons, attr, els.c),
+						a: A2($elm$core$List$cons, attr, els.a)
+>>>>>>> Stashed changes
 					}) : ($mdgriffith$elm_ui$Element$Input$isPixel(height) ? _Utils_update(
 					els,
 					{
@@ -12216,13 +12433,21 @@ var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
 				return _Utils_update(
 					els,
 					{
+<<<<<<< Updated upstream
 						fullParent: A2($elm$core$List$cons, attr, els.fullParent)
+=======
+						c: A2($elm$core$List$cons, attr, els.c)
+>>>>>>> Stashed changes
 					});
 			case 'AlignY':
 				return _Utils_update(
 					els,
 					{
+<<<<<<< Updated upstream
 						fullParent: A2($elm$core$List$cons, attr, els.fullParent)
+=======
+						c: A2($elm$core$List$cons, attr, els.c)
+>>>>>>> Stashed changes
 					});
 			case 'StyleClass':
 				switch (attr.b.$) {
@@ -12231,10 +12456,17 @@ var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
 						return _Utils_update(
 							els,
 							{
+<<<<<<< Updated upstream
 								fullParent: A2($elm$core$List$cons, attr, els.fullParent),
 								input: A2($elm$core$List$cons, attr, els.input),
 								parent: A2($elm$core$List$cons, attr, els.parent),
 								wrapper: A2($elm$core$List$cons, attr, els.wrapper)
+=======
+								c: A2($elm$core$List$cons, attr, els.c),
+								j: A2($elm$core$List$cons, attr, els.j),
+								a: A2($elm$core$List$cons, attr, els.a),
+								ae: A2($elm$core$List$cons, attr, els.ae)
+>>>>>>> Stashed changes
 							});
 					case 'PaddingStyle':
 						var cls = attr.a;
@@ -12274,12 +12506,21 @@ var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
 							return _Utils_update(
 								els,
 								{
+<<<<<<< Updated upstream
 									cover: A2($elm$core$List$cons, attr, els.cover),
 									input: A2(
 										$elm$core$List$cons,
 										newHeight,
 										A2($elm$core$List$cons, newLineHeight, els.input)),
 									parent: A2($elm$core$List$cons, reducedVerticalPadding, els.parent)
+=======
+									o: A2($elm$core$List$cons, attr, els.o),
+									j: A2(
+										$elm$core$List$cons,
+										newHeight,
+										A2($elm$core$List$cons, newLineHeight, els.j)),
+									a: A2($elm$core$List$cons, reducedVerticalPadding, els.a)
+>>>>>>> Stashed changes
 								});
 						}
 					case 'BorderWidth':
@@ -12301,14 +12542,22 @@ var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
 						return _Utils_update(
 							els,
 							{
+<<<<<<< Updated upstream
 								fullParent: A2($elm$core$List$cons, attr, els.fullParent)
+=======
+								c: A2($elm$core$List$cons, attr, els.c)
+>>>>>>> Stashed changes
 							});
 					case 'FontFamily':
 						var _v4 = attr.b;
 						return _Utils_update(
 							els,
 							{
+<<<<<<< Updated upstream
 								fullParent: A2($elm$core$List$cons, attr, els.fullParent)
+=======
+								c: A2($elm$core$List$cons, attr, els.c)
+>>>>>>> Stashed changes
 							});
 					default:
 						var flag = attr.a;
@@ -12326,13 +12575,21 @@ var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
 				return _Utils_update(
 					els,
 					{
+<<<<<<< Updated upstream
 						input: A2($elm$core$List$cons, attr, els.input)
+=======
+						j: A2($elm$core$List$cons, attr, els.j)
+>>>>>>> Stashed changes
 					});
 			case 'Describe':
 				return _Utils_update(
 					els,
 					{
+<<<<<<< Updated upstream
 						input: A2($elm$core$List$cons, attr, els.input)
+=======
+						j: A2($elm$core$List$cons, attr, els.j)
+>>>>>>> Stashed changes
 					});
 			case 'Class':
 				return _Utils_update(
@@ -12344,7 +12601,11 @@ var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
 				return _Utils_update(
 					els,
 					{
+<<<<<<< Updated upstream
 						input: A2($elm$core$List$cons, attr, els.input)
+=======
+						j: A2($elm$core$List$cons, attr, els.j)
+>>>>>>> Stashed changes
 					});
 		}
 	});
@@ -12352,17 +12613,29 @@ var $mdgriffith$elm_ui$Element$Input$redistribute = F3(
 	function (isMultiline, stacked, attrs) {
 		return function (redist) {
 			return {
+<<<<<<< Updated upstream
 				cover: $elm$core$List$reverse(redist.cover),
 				fullParent: $elm$core$List$reverse(redist.fullParent),
 				input: $elm$core$List$reverse(redist.input),
 				parent: $elm$core$List$reverse(redist.parent),
 				wrapper: $elm$core$List$reverse(redist.wrapper)
+=======
+				o: $elm$core$List$reverse(redist.o),
+				c: $elm$core$List$reverse(redist.c),
+				j: $elm$core$List$reverse(redist.j),
+				a: $elm$core$List$reverse(redist.a),
+				ae: $elm$core$List$reverse(redist.ae)
+>>>>>>> Stashed changes
 			};
 		}(
 			A3(
 				$elm$core$List$foldl,
 				A2($mdgriffith$elm_ui$Element$Input$redistributeOver, isMultiline, stacked),
+<<<<<<< Updated upstream
 				{cover: _List_Nil, fullParent: _List_Nil, input: _List_Nil, parent: _List_Nil, wrapper: _List_Nil},
+=======
+				{o: _List_Nil, c: _List_Nil, j: _List_Nil, a: _List_Nil, ae: _List_Nil},
+>>>>>>> Stashed changes
 				attrs));
 	});
 var $mdgriffith$elm_ui$Element$Input$renderBox = function (_v0) {
@@ -12448,8 +12721,13 @@ var $mdgriffith$elm_ui$Element$Input$textHelper = F3(
 		var withDefaults = _Utils_ap($mdgriffith$elm_ui$Element$Input$defaultTextBoxStyle, attrs);
 		var redistributed = A3(
 			$mdgriffith$elm_ui$Element$Input$redistribute,
+<<<<<<< Updated upstream
 			_Utils_eq(textInput.type_, $mdgriffith$elm_ui$Element$Input$TextArea),
 			$mdgriffith$elm_ui$Element$Input$isStacked(textOptions.label),
+=======
+			_Utils_eq(textInput.m, $mdgriffith$elm_ui$Element$Input$TextArea),
+			$mdgriffith$elm_ui$Element$Input$isStacked(textOptions.G),
+>>>>>>> Stashed changes
 			withDefaults);
 		var onlySpacing = function (attr) {
 			if ((attr.$ === 'StyleClass') && (attr.b.$ === 'SpacingStyle')) {
@@ -12460,8 +12738,13 @@ var $mdgriffith$elm_ui$Element$Input$textHelper = F3(
 			}
 		};
 		var heightConstrained = function () {
+<<<<<<< Updated upstream
 			var _v7 = textInput.type_;
 			if (_v7.$ === 'TextInputNode') {
+=======
+			var _v7 = textInput.m;
+			if (!_v7.$) {
+>>>>>>> Stashed changes
 				var inputType = _v7.a;
 				return false;
 			} else {
@@ -12518,8 +12801,13 @@ var $mdgriffith$elm_ui$Element$Input$textHelper = F3(
 			$mdgriffith$elm_ui$Internal$Model$element,
 			$mdgriffith$elm_ui$Internal$Model$asEl,
 			function () {
+<<<<<<< Updated upstream
 				var _v3 = textInput.type_;
 				if (_v3.$ === 'TextInputNode') {
+=======
+				var _v3 = textInput.m;
+				if (!_v3.$) {
+>>>>>>> Stashed changes
 					var inputType = _v3.a;
 					return $mdgriffith$elm_ui$Internal$Model$NodeName('input');
 				} else {
@@ -12528,8 +12816,13 @@ var $mdgriffith$elm_ui$Element$Input$textHelper = F3(
 			}(),
 			_Utils_ap(
 				function () {
+<<<<<<< Updated upstream
 					var _v4 = textInput.type_;
 					if (_v4.$ === 'TextInputNode') {
+=======
+					var _v4 = textInput.m;
+					if (!_v4.$) {
+>>>>>>> Stashed changes
 						var inputType = _v4.a;
 						return _List_fromArray(
 							[
@@ -12569,11 +12862,19 @@ var $mdgriffith$elm_ui$Element$Input$textHelper = F3(
 							$mdgriffith$elm_ui$Internal$Model$NoAttribute,
 							A2($elm$core$Maybe$map, $mdgriffith$elm_ui$Element$Input$autofill, textInput.autofill))
 						]),
+<<<<<<< Updated upstream
 					redistributed.input)),
 			$mdgriffith$elm_ui$Internal$Model$Unkeyed(_List_Nil));
 		var wrappedInput = function () {
 			var _v0 = textInput.type_;
 			if (_v0.$ === 'TextArea') {
+=======
+					redistributed.j)),
+			$mdgriffith$elm_ui$Internal$Model$Unkeyed(_List_Nil));
+		var wrappedInput = function () {
+			var _v0 = textInput.m;
+			if (_v0.$ === 1) {
+>>>>>>> Stashed changes
 				return A4(
 					$mdgriffith$elm_ui$Internal$Model$element,
 					$mdgriffith$elm_ui$Internal$Model$asEl,
@@ -12683,13 +12984,20 @@ var $mdgriffith$elm_ui$Element$Input$textHelper = F3(
 				A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$cursor, $mdgriffith$elm_ui$Internal$Style$classes.cursorText),
 				A2(
 					$elm$core$List$cons,
+<<<<<<< Updated upstream
 					$mdgriffith$elm_ui$Element$Input$isHiddenLabel(textOptions.label) ? $mdgriffith$elm_ui$Internal$Model$NoAttribute : $mdgriffith$elm_ui$Element$spacing(5),
 					A2($elm$core$List$cons, $mdgriffith$elm_ui$Element$Region$announce, redistributed.fullParent))),
 			textOptions.label,
+=======
+					$mdgriffith$elm_ui$Element$Input$isHiddenLabel(textOptions.G) ? $mdgriffith$elm_ui$Internal$Model$NoAttribute : $mdgriffith$elm_ui$Element$spacing(5),
+					A2($elm$core$List$cons, $mdgriffith$elm_ui$Element$Region$announce, redistributed.c))),
+			textOptions.G,
+>>>>>>> Stashed changes
 			wrappedInput);
 	});
 var $mdgriffith$elm_ui$Element$Input$text = $mdgriffith$elm_ui$Element$Input$textHelper(
 	{
+<<<<<<< Updated upstream
 		autofill: $elm$core$Maybe$Nothing,
 		spellchecked: false,
 		type_: $mdgriffith$elm_ui$Element$Input$TextInputNode('text')
@@ -12704,6 +13012,22 @@ var $author$project$Main$view = function (model) {
 	var bt = model.inStart ? 'Stop!' : 'Start';
 	var b = $elm$core$String$fromInt(
 		model.working ? 0 : (model.counter - model.limit));
+=======
+		s: $elm$core$Maybe$Nothing,
+		w: false,
+		m: $mdgriffith$elm_ui$Element$Input$TextInputNode('text')
+	});
+var $author$project$Main$view = function (model) {
+	var w = $elm$core$String$fromInt(
+		model.W ? model.g : model.b);
+	var l = $elm$core$String$fromInt(model.b);
+	var i = $elm$core$String$fromInt(model.d);
+	var c = $elm$core$String$fromInt(model.g);
+	var btClass = model.F ? 'bt stop-bt' : 'bt';
+	var bt = model.F ? 'Stop!' : 'Start';
+	var b = $elm$core$String$fromInt(
+		model.W ? 0 : (model.g - model.b));
+>>>>>>> Stashed changes
 	return A2(
 		$mdgriffith$elm_ui$Element$layout,
 		_List_Nil,

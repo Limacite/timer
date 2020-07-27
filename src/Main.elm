@@ -64,6 +64,9 @@ type Msg
 port beep : () -> Cmd msg
 
 
+port timeSet : ( Int, Int, Int ) -> Cmd msg
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -125,10 +128,14 @@ update msg model =
             ( { model | inStart = r }, Cmd.none )
 
         ChangePlayer ->
-            ( { model | counter = 0, working = True }, Cmd.none )
+            let
+                cmd =
+                    timeSet ( model.limit, model.interval, 0 )
+            in
+            ( { model | counter = 0, working = True }, cmd )
 
         IncrementLimit ->
-            ( { model | limit = model.limit + 1 }, Cmd.none )
+            ( { model | limit = model.limit + 1 }, timeSet ( model.limit + 1, model.interval, model.counter ) )
 
         DecrementLimit ->
             ( { model
@@ -139,11 +146,11 @@ update msg model =
                     else
                         model.limit
               }
-            , Cmd.none
+            , timeSet ( model.limit - 1, model.interval, model.counter )
             )
 
         IncrementInterval ->
-            ( { model | interval = model.interval + 1 }, Cmd.none )
+            ( { model | interval = model.interval + 1 }, timeSet ( model.limit, model.interval + 1, model.counter ) )
 
         DecrementInterval ->
             ( { model
@@ -154,7 +161,7 @@ update msg model =
                     else
                         model.interval
               }
-            , Cmd.none
+            , timeSet ( model.limit, model.interval - 1, model.counter )
             )
 
         EditLimit inputedTime ->
@@ -166,6 +173,14 @@ update msg model =
 
                         Just int ->
                             int
+
+                cmd =
+                    case String.toInt inputedTime of
+                        Nothing ->
+                            Cmd.none
+
+                        Just int ->
+                            timeSet ( int, model.interval, model.counter )
             in
             ( { model
                 | limit =
@@ -175,7 +190,7 @@ update msg model =
                     else
                         model.limit
               }
-            , Cmd.none
+            , cmd
             )
 
         EditInterval inputedTime ->
@@ -187,6 +202,14 @@ update msg model =
 
                         Just int ->
                             int
+
+                cmd =
+                    case String.toInt inputedTime of
+                        Nothing ->
+                            Cmd.none
+
+                        Just int ->
+                            timeSet ( model.limit, int, model.counter )
             in
             ( { model
                 | interval =
@@ -196,7 +219,7 @@ update msg model =
                     else
                         model.limit
               }
-            , Cmd.none
+            , cmd
             )
 
 
@@ -284,16 +307,3 @@ view model =
                     ]
                 ]
             ]
-
-
-
---METHOD
-{--
-bellAttribute : Bool -> List (Html.Attribute msg)
-bellAttribute switch =
-    [ autoplay switch
-    , src "bell.mp3"
-    , preload "auto"
-    , controls False
-    ]
---}

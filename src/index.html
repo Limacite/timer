@@ -5,21 +5,62 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="elm.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+    <script src="cercle.js"></script>
     <title>Port Example</title>
 </head>
 
 <body>
     <div id="root"></div>
+    <canvas id="myPieChart"></canvas>
     <script>
+    //bell
       var app = Elm.Main.init({
         node: document.getElementById("root")
       });
       var bell = new Audio(`bell.mp3`);
-      
+
       app.ports.beep.subscribe(
         function(){
           bell.play();
-        });
+      });
+
+      var timelist = [3000,2000,0];
+      var inStart = false;
+      var count = 0;
+      var timeKeeper = [3000,0,2000,0];
+      var ctx = document.getElementById("myPieChart");
+      var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          datasets: [{
+              backgroundColor: [
+                  "#DA70D6",
+                  "#BB5179",
+                  "#3C00FF",
+                  "#6495ED"
+              ],
+              data: timeKeeper
+          }]
+        },
+        options: {
+          animation : {
+            duration:0
+          },
+          cutoutPercentage: 90
+        }
+      });
+
+      app.ports.timeSet.subscribe(function(message){
+         //message : [limit,interval,counter]
+        timelist = message.map(x => x * 1000);
+        count = timelist[2];
+        timeKeeper = [timelist[0],0,timelist[1],0]
+        myPieChart.update();
+      });
+
+      //var chartClock = setInterval(updateChart(myPieChart,inStart),1);
+
     </script>
 </body>
 
