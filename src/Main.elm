@@ -7,7 +7,7 @@ import Element.Border as BD
 import Element.Font as Font
 import Element.Input as Input
 import Html
-import Html.Attributes exposing (autoplay, controls, preload, src)
+import Html.Attributes exposing (autoplay, controls, id, preload, src)
 import Task
 import Time
 
@@ -62,6 +62,9 @@ type Msg
 
 
 port beep : () -> Cmd msg
+
+
+port doSet : Bool -> Cmd msg
 
 
 port timeSet : ( Int, Int, Int ) -> Cmd msg
@@ -124,8 +127,11 @@ update msg model =
 
                     else
                         True
+
+                cmd =
+                    doSet model.inStart
             in
-            ( { model | inStart = r }, Cmd.none )
+            ( { model | inStart = r }, cmd )
 
         ChangePlayer ->
             let
@@ -279,31 +285,37 @@ view model =
     layout [] <|
         row [ centerX, centerY, spacing 30 ]
             [ column []
-                [ el [ centerX, Font.size 50 ] <| text ((w ++ "/") ++ l)
-                , el [ centerX, Font.size 50 ] <| text ((b ++ "/") ++ i)
-                , row [ spacing 10 ]
-                    [ el [ BD.color (rgb255 0 0 0), BD.width 1, BD.solid ] <| Input.button [] { onPress = Just DoTimer, label = text bt }
-                    , el [ BD.color (rgb255 0 0 0), BD.width 1, BD.solid ] <| Input.button [] { onPress = Just ChangePlayer, label = text "Reset" }
-                    ]
-                ]
-            , column [ height fill, width (px 90) ]
-                [ el [ centerX ] <| text "work time"
-                , row [ centerY, width fill ]
-                    [ el [ width fill ] <| Input.text [ width (px 75) ] { onChange = EditLimit, text = l, placeholder = Nothing, label = Input.labelAbove [] <| text "" }
-                    , column [ height fill ]
-                        [ Input.button [ alignTop ] { onPress = Just IncrementLimit, label = text "Λ" }
-                        , Input.button [ alignBottom ] { onPress = Just DecrementLimit, label = text "V" }
+                [ el [ htmlAttribute (id "timer"), centerX, centerY, height (px 270), width (px 270) ] <|
+                    column [ centerY, centerX ]
+                        [ el [ centerX, Font.size 50 ] <| text ((w ++ "/") ++ l)
+                        , el [ centerX, Font.size 50 ] <| text ((b ++ "/") ++ i)
+                        , row [ spacing 10 ]
+                            [ el [ BD.color (rgb255 0 0 0), BD.width 1, BD.solid ] <| Input.button [] { onPress = Just DoTimer, label = text bt }
+                            , el [ BD.color (rgb255 0 0 0), BD.width 1, BD.solid ] <| Input.button [] { onPress = Just ChangePlayer, label = text "Reset" }
+                            ]
                         ]
-                    ]
-                ]
-            , column [ height fill, width (px 90) ]
-                [ el [ centerX ] <| text "interval"
-                , row [ centerY, width fill ]
-                    [ el [ width fill ] <| Input.text [ height fill, width (px 75) ] { onChange = EditInterval, text = i, placeholder = Nothing, label = Input.labelAbove [] <| text "" }
-                    , column [ height fill, centerY ]
-                        [ Input.button [ alignTop ] { onPress = Just IncrementInterval, label = text "Λ" }
-                        , Input.button [ alignBottom ] { onPress = Just DecrementInterval, label = text "V" }
+                , el [ centerX ] <|
+                    row [ centerX, width fill ]
+                        [ column [ height (px 100), width (px 120) ]
+                            [ el [ centerX ] <| text "work time"
+                            , row [ centerX, centerY ]
+                                [ el [ width fill ] <| Input.text [ width (px 75) ] { onChange = EditLimit, text = l, placeholder = Nothing, label = Input.labelAbove [] <| text "" }
+                                , column [ height fill ]
+                                    [ Input.button [ alignTop ] { onPress = Just IncrementLimit, label = text "Λ" }
+                                    , Input.button [ alignBottom ] { onPress = Just DecrementLimit, label = text "V" }
+                                    ]
+                                ]
+                            ]
+                        , column [ height (px 100), width (px 120) ]
+                            [ el [ centerX ] <| text "interval"
+                            , row [ centerX, centerY ]
+                                [ el [ width fill ] <| Input.text [ height fill, width (px 75) ] { onChange = EditInterval, text = i, placeholder = Nothing, label = Input.labelAbove [] <| text "" }
+                                , column [ height fill, centerY ]
+                                    [ Input.button [ alignTop ] { onPress = Just IncrementInterval, label = text "Λ" }
+                                    , Input.button [ alignBottom ] { onPress = Just DecrementInterval, label = text "V" }
+                                    ]
+                                ]
+                            ]
                         ]
-                    ]
                 ]
             ]
