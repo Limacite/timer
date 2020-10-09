@@ -12,7 +12,11 @@
 
 <body>
     <div id="root"></div>
-    <canvas id="myPieChart"></canvas>
+    <div id="chart-position">
+    <div id="chart-container" style="pisition: relative; height: 400px; width: 400px">
+      <canvas id="myPieChart"></canvas>
+    </div>
+    </div>
     <script>
     //bell
       var app = Elm.Main.init({
@@ -28,7 +32,8 @@
       var timelist = [3000,2000,0];
       var inStart = false;
       var count = 0;
-      var timeKeeper = [3000,0,2000,0];
+      var workingFlag = false;
+      var timeKeeper = [0,3000,0,2000];
       var ctx = document.getElementById("myPieChart");
       var myPieChart = new Chart(ctx, {
         type: 'pie',
@@ -47,6 +52,7 @@
           animation : {
             duration:0
           },
+          responsive: true,
           cutoutPercentage: 90
         }
       });
@@ -55,13 +61,35 @@
          //message : [limit,interval,counter]
         timelist = message.map(x => x * 1000);
         count = timelist[2];
-        timeKeeper = [timelist[0],0,timelist[1],0]
+        timeKeeper = [0,timelist[0],0,timelist[1]]
         myPieChart.update();
       });
 
-      //var chartClock = setInterval(updateChart(myPieChart,inStart),1);
+      app.ports.doSet.subscribe(function(doSwitch){
+        inStart = !doSwitch;
+      })
 
+      setInterval(function(){if(inStart){updateChart();}},1);
     </script>
+    <style type="text/css">
+      #timer{
+      }
+      #chart-position{
+        position: absolute;
+        top: 65px;
+        left: 50%;
+        z-index: -1;
+        transform: translate(-50%, -5%);
+      }
+      #chart-container{
+        margin: auto;
+      }
+      #myPieChart{
+        position: relative;
+        left: 50%;
+        transform: translate(-50%,40%);
+      }
+    </style>
 </body>
 
 </html>
