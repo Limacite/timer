@@ -13,7 +13,7 @@
 <body>
     <div id="root"></div>
     <div id="chart-position">
-    <div id="chart-container" style="pisition: relative; height: 400px; width: 400px">
+    <div id="chart-container" style="pisition: relative;width:400px;;height:270px">
       <canvas id="myPieChart"></canvas>
     </div>
     </div>
@@ -56,6 +56,8 @@
           cutoutPercentage: 90
         }
       });
+      var timerTop = document.getElementById("timer").getBoundingClientRect().top;
+      document.getElementById("chart-position").translate(100,100);
 
       app.ports.timeSet.subscribe(function(message){
          //message : [limit,interval,counter]
@@ -76,18 +78,18 @@
       }
       #chart-position{
         position: absolute;
-        top: 65px;
+        top: 0px;
         left: 50%;
+        background-color: green;
         z-index: -1;
-        transform: translate(-50%, -5%);
+        transform: translate(-50%, 50%);
       }
       #chart-container{
-        margin: auto;
+        background-color: rgba(255, 0, 0, 0.5);
+        transform: translate(0%, 25%);
       }
       #myPieChart{
         position: relative;
-        left: 50%;
-        transform: translate(-50%,40%);
       }
     </style>
 </body>
